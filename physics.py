@@ -5,12 +5,11 @@ import utils
 def move(x, y, obj):
     # Moves the object and returns the final x and y coordinnate that it will move
     
-    move_x = move_y = 0
-    move_x += x
-    move_y += y
     walls = utils.collision_map
     enemies = utils.enemies
     objects = utils.objects
+    obj.x += x
+    obj.y += y
 
     for wall in walls:
         if "color" in wall:
@@ -18,21 +17,24 @@ def move(x, y, obj):
                 continue
         if "object" in wall:
             wall = wall['object'] # Occurs in edit mode
-        if wall.colliderect(obj):
-            collidewith = "wall"
-            if x > 0:
-                move_x -= x
+        
+        for wall in walls:
+            if isinstance(wall, dict):
+                if wall['color'] != (0,0,0):
+                    continue
+                wall = wall['object']
+            if wall.colliderect(obj):
+                if x > 0: # Moving right
+                    obj.x -= x
+                if x < 0: # Moving left
+                    obj.x -= x
+                if y > 0: # Moving down
+                    obj.y -= y
+                    utils.onground = True
+                if y < 0: # Moving up
+                    obj.y -= y
 
-            if x < 0:
-                move_x += x
-            
-            if y > 0:
-                move_y -= y
-
-            if y < 0:
-                move_y += y
-
-            return (move_x, move_y, collidewith)
+                return "wall"
 
 
     for enemy in enemies:
@@ -41,18 +43,18 @@ def move(x, y, obj):
         if enemy.colliderect(obj):
             collidewith = "enemy"
             if x > 0:
-                move_x -= x
+                obj.x -= x
             
             if x < 0:
-                move_x += x
+                obj.x += x
 
             if y > 0:
-                move_y -= y
+                obj.y -= y
 
             if y < 0:
-                move_y += y
+                obj.y += y
             
-            return (move_x, move_y, collidewith)
+            return collidewith
         
     for object_ in objects:
         if "object" in object_:
@@ -60,17 +62,18 @@ def move(x, y, obj):
         if object_.collide(obj):
             collidewith = "object"
             if x > 0:
-                move_x -= x
+                obj.x -= x
             
             if x < 0:
-                move_x += x
+                obj.x += x
             
             if y > 0:
-                move_y -= y
+                obj.y -= y
 
             if y < 0:
-                move_y += y
-            
-            return (move_x, move_y, collidewith)
+                obj.y += y
+           
+            return collidewith
 
-    return (move_x, move_y, None)
+
+    return None

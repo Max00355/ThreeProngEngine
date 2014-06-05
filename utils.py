@@ -12,6 +12,14 @@ camerax = cameray = 0 # Camera variables
 collision_map = [] # This is a list of walls that the user can collide into set at run time
 speed = 5
 gravity = 5
+level = 0
+jump_speed = 10
+jump_time_in_air = 0.3 # Seconds
+levels = {0:"maps/map.lvl"}
+size = 25 # Size of blocks
+onground = False
+lastmove = "right"
+jump = None
 
 # Userful functions
 

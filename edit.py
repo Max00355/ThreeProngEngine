@@ -11,20 +11,20 @@ def main():
     screen = utils.screen
     
     xc = yc = 0
-    for y in xrange(utils.resolution[1] / 25):
-        for x in xrange(utils.resolution[0] / 25):
-            utils.collision_map.append({"object":pygame.Rect(xc, yc, 25, 25), "color":(255,255,255)}) 
-            xc += 25
+    for y in xrange(utils.resolution[1] / utils.size):
+        for x in xrange(utils.resolution[0] / utils.size):
+            utils.collision_map.append({"object":pygame.Rect(xc, yc, utils.size,utils.size), "color":(255,255,255)}) 
+            xc += utils.size
         xc = 0
-        yc += 25
+        yc += utils.size
 
     if os.path.exists(sys.argv[1]):
         data = json.loads(pickle.loads(open(sys.argv[1], 'rb').read()))
         for on, x in enumerate(data['map']):
-            utils.collision_map.append({"object":pygame.Rect(data['map'][on][0], data['map'][on][1], 25, 25), "color":(0,0,0)}) 
+            utils.collision_map.append({"object":pygame.Rect(data['map'][on][0], data['map'][on][1], utils.size,utils.size), "color":(0,0,0)}) 
     
         if data['player']:
-            utils.player = pygame.Rect(data['player'][0], data['player'][1], 25, 25)
+            utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size,utils.size)
 
     clock = pygame.time.Clock()
     modes = ["block", "player", "object", "enemy"]
@@ -75,12 +75,12 @@ def main():
                         if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
                             wall['color'] = (0,0,0)
             
-                            utils.collision_map.append({"object":pygame.Rect(wall['object'].x, wall['object'].y, 25, 25), "color":(255,255,255)})
+                            utils.collision_map.append({"object":pygame.Rect(wall['object'].x, wall['object'].y, utils.size,utils.size), "color":(255,255,255)})
                             break 
 
                 if mode == "player":
                     pos = pygame.mouse.get_pos()
-                    utils.player = pygame.Rect(pos[0] + utils.camerax, pos[1] + utils.cameray, 25, 25)
+                    utils.player = pygame.Rect(pos[0] + utils.camerax, pos[1] + utils.cameray, utils.size,utils.size)
                 
         key = pygame.key.get_pressed()
 
@@ -116,10 +116,10 @@ def main():
 
         for x in utils.collision_map:
             if x['color'] == (0,0,0):
-                pygame.draw.rect(screen, x['color'], pygame.Rect(x['object'].x - utils.camerax, x['object'].y - utils.cameray, 25, 25))
+                pygame.draw.rect(screen, x['color'], pygame.Rect(x['object'].x - utils.camerax, x['object'].y - utils.cameray, utils.size,utils.size))
 
         if utils.player: 
-            pygame.draw.rect(screen, (0,255,255), pygame.Rect(utils.player.x - utils.camerax, utils.player.y - utils.cameray, 25, 25))
+            pygame.draw.rect(screen, (0,255,255), pygame.Rect(utils.player.x - utils.camerax, utils.player.y - utils.cameray, utils.size,utils.size))
         screen.blit(font.render(mode, -1, (0,0,0)), (10, 10))
         
         
