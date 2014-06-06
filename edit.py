@@ -27,7 +27,7 @@ def main():
             utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size,utils.size)
 
     clock = pygame.time.Clock()
-    modes = ["block", "player", "object", "enemy", "erase"]
+    modes = ["block", "player", "object", "enemy", "endpoint", "erase"]
     mode_on = 0
     pygame.font.init()
     font = pygame.font.SysFont("Arial", 25)
@@ -54,7 +54,7 @@ def main():
                             map_.append((x['object'].x, x['object'].y))
                     print 'Saved'
                     if utils.player:
-                        data = json.dumps({"map":map_, "player":[utils.player.x, utils.player.y], "enemies":utils.enemies, "objects":utils.objects})
+                        data = json.dumps({"map":map_, "player":[utils.player.x, utils.player.y], "enemies":utils.enemies, "objects":utils.objects, "endpoints":utils.endpoints})
                     else:
                         data = json.dumps({"map":map_, "player":None, "enemies":utils.enemies, "objects":utils.objects})
                     with open(sys.argv[1], 'wb') as file:
