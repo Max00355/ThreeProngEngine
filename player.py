@@ -8,8 +8,6 @@ class Player:
     def update(self):
         # Let's set the camera
 
-        utils.camerax = utils.player[0]
-        
         # Any movement by player
         x = y = 0
         key = pygame.key.get_pressed()
@@ -27,6 +25,7 @@ class Player:
             collidewith = physics.move(x, y, utils.player) 
 
         # Gravity
+
         if not utils.jump: 
             collidewith = physics.move(0, utils.gravity, utils.player) 
         

@@ -6,8 +6,8 @@ import player as player_
 import json
 import pickle
 
-def load_collision_map():
-    level = utils.levels[utils.level]
+def load_collision_map(level):
+
     with open(level, 'rb') as file:
         data = json.loads(pickle.loads(file.read()))
     
@@ -21,6 +21,8 @@ def load_collision_map():
 
     for x in data['objects']: # setup objects
         utils.objects.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
+    
+    return json.loads(open("modules/maps.json").read())
 
 def run():
 
@@ -36,21 +38,13 @@ def run():
 
     }
 
-    
-    map_setup = {
-
-            "maps/map.lvl":"Rect",
-
-
-    }
-
 
     # Load modules
     for x in modules:
         modules[x] = json.loads(open(modules[x]).read())
 
-    load_collision_map() # This will load what utils.level is set to
-    map_ = utils.levels[utils.level]
+    map_ = load_collision_map(utils.first_level) # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
+    map_on = utils.first_level
     clock = pygame.time.Clock()
 
     while True:
@@ -61,12 +55,12 @@ def run():
        
         screen.fill((255,255,255))
 
-        if map_setup[map_] == "Rect":
+        if map_[map_on]['background'] == "Rect":
             for x in utils.collision_map:
                 pygame.draw.rect(screen, (0,0,0), x)
         else:
             # Draw map file
-            screen.blit(utils.loader(map_setup[map_]), (0 - utils.camerax, 0 - utils.cameray))
+            screen.blit(utils.loader(map_[map_on]['background']), (0 - utils.camerax, 0 - utils.cameray))
 
         if modules[Player]['standing'] == "Rect":
             pygame.draw.rect(screen, (0, 255,255), utils.player)

@@ -4,10 +4,14 @@ import utils
 
 def move(x, y, obj):
     # Moves the object and returns the final x and y coordinnate that it will move
-    
+
+    if isinstance(obj, dict):
+        obj = obj['object']
     walls = utils.collision_map
     enemies = utils.enemies
     objects = utils.objects
+    if not obj: # For edit mode
+        return
     obj.x += x
     obj.y += y
 

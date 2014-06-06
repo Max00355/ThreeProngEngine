@@ -27,7 +27,7 @@ def main():
             utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size,utils.size)
 
     clock = pygame.time.Clock()
-    modes = ["block", "player", "object", "enemy"]
+    modes = ["block", "player", "object", "enemy", "erase"]
     mode_on = 0
     pygame.font.init()
     font = pygame.font.SysFont("Arial", 25)
@@ -53,7 +53,10 @@ def main():
                         if x['color'] == (0, 0, 0):
                             map_.append((x['object'].x, x['object'].y))
                     print 'Saved'
-                    data = json.dumps({"map":map_, "player":[utils.player.x, utils.player.y], "enemies":utils.enemies, "objects":utils.objects})
+                    if utils.player:
+                        data = json.dumps({"map":map_, "player":[utils.player.x, utils.player.y], "enemies":utils.enemies, "objects":utils.objects})
+                    else:
+                        data = json.dumps({"map":map_, "player":None, "enemies":utils.enemies, "objects":utils.objects})
                     with open(sys.argv[1], 'wb') as file:
                         file.write(pickle.dumps(data))
                     map_ = None
@@ -82,6 +85,14 @@ def main():
                     pos = pygame.mouse.get_pos()
                     utils.player = pygame.Rect(pos[0] + utils.camerax, pos[1] + utils.cameray, utils.size,utils.size)
                 
+                if mode == "erase":
+                    pos = pygame.mouse.get_pos()
+                    for wall in utils.collision_map:
+                        if wall['color'] == (0,0,0):
+                            if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                                wall['color'] = (255,255,255)
+                                break
+
         key = pygame.key.get_pressed()
 
         # This moves the camera around the edit field, we have to also move each individual grid block so that we can keep adding blocks to other places.
