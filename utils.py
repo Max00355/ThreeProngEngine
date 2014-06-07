@@ -13,14 +13,14 @@ collision_map = [] # This is a list of walls that the user can collide into set 
 
 ##### Editable Fields ####
 
-background_fill = (0,0,0)
+background_fill = (255,255,255)
 speed = 5
 gravity = 3
 jump_speed = 10
 jump_time_in_air = 0.15 # Seconds moving upward (determines how high the object will jump)
 size = 16 # Size of blocks
 title = "3 Prong Engine"
-camera_on = True
+camera_on = False # This should only be True when there is a set background image, otherwise it won't look right
 
 ###########################################################
 
