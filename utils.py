@@ -1,7 +1,7 @@
 import pygame
 
 # Variables
-resolution = (800, 600)
+resolution = (900, 600)
 screen = pygame.display.set_mode(resolution) # Set the main screen here so that every module has access to it
 player = None # Player object set at run time (described by a JSON file)
 endpoints = [] # This is the end of the level, it will then look at maps.json to see what to load next
@@ -13,12 +13,14 @@ collision_map = [] # This is a list of walls that the user can collide into set 
 
 ##### Editable Fields ####
 
+background_fill = (0,0,0)
 speed = 5
 gravity = 3
 jump_speed = 10
 jump_time_in_air = 0.15 # Seconds moving upward (determines how high the object will jump)
 size = 16 # Size of blocks
 title = "3 Prong Engine"
+camera_on = True
 
 ###########################################################
 

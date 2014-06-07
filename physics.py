@@ -15,7 +15,9 @@ def move(x, y, obj):
         return
     obj.x += x
     obj.y += y
-
+    if utils.camera_on:
+        utils.camerax += x
+        utils.cameray += y
     for wall in walls:
         if "color" in wall:
             if wall['color'] != (0,0,0): # Occurs only in edit mode, we don't want to collide with the grid.
@@ -38,6 +40,9 @@ def move(x, y, obj):
                     utils.onground = True
                 if y < 0: # Moving up
                     obj.y -= y
+                if utils.camera_on: 
+                    utils.camerax -= x
+                    utils.cameray -= y
 
                 return "wall"
 
@@ -55,7 +60,9 @@ def move(x, y, obj):
 
             if y < 0:
                 obj.y += y
-            
+            if utils.camera_on:                                                                                                                                              
+                utils.camerax -= x
+                utils.cameray -= y
             return "enemy"
         
     for object_ in objects: 
@@ -71,7 +78,10 @@ def move(x, y, obj):
 
             if y < 0:
                 obj.y += y
-           
+            if utils.camera_on:                                                                                                                                              
+                utils.camerax -= x
+                utils.cameray -= y
+            
             return "object"
 
     for endpoint in endpoints:

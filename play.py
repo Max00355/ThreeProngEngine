@@ -11,8 +11,8 @@ def load_collision_map(level):
 
     with open(level, 'rb') as file:
         data = json.loads(pickle.loads(file.read()))
-    
-    utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size, utils.size) # Setup player
+    if data['player']: 
+       utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size, utils.size) # Setup player
 
     utils.collision_map = []
     utils.enemies = []
@@ -67,13 +67,17 @@ def run():
     load_collision_map(utils.map_on) # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
     clock = pygame.time.Clock()
 
+    if utils.camera_on: # This will center the camera on the player
+        utils.camerax = (utils.player.x / (utils.resolution[0] / 2)) - utils.resolution[0] / 3
+        utils.cameray = (utils.player.y / (utils.resolution[1] / 2)) - utils.resolution[1] / 6
+    
     while True:
         clock.tick(35)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
        
-        screen.fill((255,255,255))
+        screen.fill(utils.background_fill)
         
         if utils.map_[utils.map_on]['background'] == "Rect":
             for x in utils.collision_map:
@@ -86,11 +90,12 @@ def run():
         ##################### Custom modules here ###################
 
 
-        if modules[Player]['standing'] == "Rect":
-            pygame.draw.rect(screen, (0, 255,255), utils.player)
-        else:
-            # Load images instead of block
-            pass
+        if utils.player: 
+            if modules[Player]['standing'] == "Rect":
+                pygame.draw.rect(screen, (0, 255,255), pygame.Rect(utils.player.x - utils.camerax, utils.player.y - utils.cameray, utils.size, utils.size))
+            else:
+                # Load images instead of block
+                pass
 
 
         # Update sprites, add your sprite's update function here
