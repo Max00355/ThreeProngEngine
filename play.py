@@ -1,10 +1,10 @@
+import json
+import pickle
 import sys
 import pygame
 from pygame.locals import *
 import utils
 import player as player_
-import json
-import pickle
 import util_functions
 
 def load_collision_map(level):
@@ -31,7 +31,6 @@ def load_collision_map(level):
     for x in data['endpoints']:
         utils.endpoints.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
 
-    return json.loads(open("modules/maps.json").read())
 
 def run():
 
@@ -51,9 +50,10 @@ def run():
     # Load modules
     for x in modules:
         modules[x] = json.loads(open(modules[x]).read())
-
-    utils.map_ = load_collision_map("maps/map.lvl") # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
-    utils.map_on = "maps/map.lvl"
+    
+    utils.map_ = util_functions.load_map_module()
+    utils.map_on = utils.map_['first'] # Thee is a field in the module called "first" that defines the first "level" or screen.
+    load_collision_map(utils.map_on) # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
     clock = pygame.time.Clock()
 
     while True:

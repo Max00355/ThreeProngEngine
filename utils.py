@@ -9,13 +9,20 @@ enemies = [] # Enemies set at run time (Also described by a JSOn file, the numbe
 objects = [] # Objects set at run time (boxes, items, etc, described by a JSON file)
 camerax = cameray = 0 # Camera variables
 collision_map = [] # This is a list of walls that the user can collide into set at run time
+
+
+##### Editable Fields ####
+
 speed = 5
 gravity = 3
 jump_speed = 10
 jump_time_in_air = 0.15 # Seconds moving upward
 size = 16 # Size of blocks
+
+###########################################################
+
 onground = False
-lastmove = "right"
+lastmove = "right" # To determine position of sprite image
 jump = None
 map_on = None
 map_ = None # Stores data of modules/maps.json

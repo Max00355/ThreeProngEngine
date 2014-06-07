@@ -1,6 +1,7 @@
 {
+    "first":"maps/map.lvl",
 
-    "maps/map.lvl":{"background":"Rect", "next":"maps/map.lvl"}
-
+    "maps/map.lvl":{"background":"Rect", "next":"maps/map2.lvl"},
+    "maps/map2.lvl":{"background":"Rect", "next":"maps/map.lvl"}
 
 }
