@@ -10,6 +10,8 @@ import player as player_
 def main():
     screen = utils.screen
     
+    pygame.display.set_caption("Edit")
+
     xc = yc = 0
     for y in xrange(utils.resolution[1] / utils.size):
         for x in xrange(utils.resolution[0] / utils.size):
