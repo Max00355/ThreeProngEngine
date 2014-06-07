@@ -181,13 +181,13 @@ def main():
                 pygame.draw.rect(screen, x['color'], pygame.Rect(x['object'].x - utils.camerax, x['object'].y - utils.cameray, utils.size,utils.size))
         
         for x in utils.enemies:
-            pygame.draw.rect(screen, (255, 0, 0), x)
+            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(x.x - utils.camerax, x.y - utils.cameray, utils.size,utils.size)) 
 
         for x in utils.objects:
-            pygame.draw.rect(screen, (255, 100, 0), x)
+            pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(x.x - utils.camerax, x.y - utils.cameray, utils.size,utils.size))
 
         for x in utils.endpoints:
-            pygame.draw.rect(screen, (0, 100, 255), x)
+            pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(x.x - utils.camerax, x.y - utils.cameray, utils.size,utils.size))
 
 
         if utils.player: 

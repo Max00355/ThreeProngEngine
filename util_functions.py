@@ -19,4 +19,7 @@ def next_map():
     data = utils.map_[utils.map_on]
     play.load_collision_map(data['next'])
     utils.map_on = data['next']
+    if utils.camera_on: # This will center the camera on the player
+        utils.camerax = (utils.player.x / (utils.resolution[0] / 2)) - utils.resolution[0] / 3
+        utils.cameray = (utils.player.y / (utils.resolution[1] / 2)) - utils.resolution[1] / 6
     return data['next']
