@@ -26,6 +26,19 @@ def main():
         if data['player']:
             utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size,utils.size)
 
+        if data['objects']:
+            for x in data['objects']:
+                utils.objects.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
+
+        if data['enemies']:
+            for x in data['enemies']:
+                utils.enemies.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
+
+        if data['endpoints']:
+            for x in data['endpoints']:
+                utils.endpoints.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
+
+
     clock = pygame.time.Clock()
     modes = ["block", "player", "object", "enemy", "endpoint", "erase"]
     mode_on = 0
@@ -49,18 +62,31 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == K_s:
                     map_ = []
-                    for x in utils.collision_map:
-                        if x['color'] == (0, 0, 0):
-                            map_.append((x['object'].x, x['object'].y))
+                    enemies = []
+                    objects = []
+                    endpoints = []
+
+                    for m in utils.collision_map:
+                        if m['color'] == (0, 0, 0):
+                            map_.append((m['object'].x, m['object'].y))
+
+                    for e in utils.enemies:
+                        enemies.append((e.x, e.y))
+
+                    for o in utils.objects:
+                        objects.append((o.x, o.y))
+
+                    for end in utils.endpoints:
+                        endpoints.append((end.x, end.y))
                     print 'Saved'
                     if utils.player:
-                        data = json.dumps({"map":map_, "player":[utils.player.x, utils.player.y], "enemies":utils.enemies, "objects":utils.objects, "endpoints":utils.endpoints})
+                        data = json.dumps({"map":map_, "player":[utils.player.x, utils.player.y], "enemies":enemies, "objects":objects, "endpoints":endpoints})
                     else:
-                        data = json.dumps({"map":map_, "player":None, "enemies":utils.enemies, "objects":utils.objects})
+                        data = json.dumps({"map":map_, "player":None, "enemies":enemies, "objects":objects, "endpoints":endpoints})
                     with open(sys.argv[1], 'wb') as file:
                         file.write(pickle.dumps(data))
-                    map_ = None
-                
+                    map_ = enemies = objects = endpoints = None
+                     
                 if event.key == K_m:
 
                     if mode_on == len(modes) - 1:
@@ -72,8 +98,8 @@ def main():
                     utils.camerax = utils.cameray = 0
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
                 if mode == "block":
-                    pos = pygame.mouse.get_pos()
                     for wall in utils.collision_map:
                         if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
                             wall['color'] = (0,0,0)
@@ -81,18 +107,41 @@ def main():
                             utils.collision_map.append({"object":pygame.Rect(wall['object'].x, wall['object'].y, utils.size,utils.size), "color":(255,255,255)})
                             break 
 
-                if mode == "player":
-                    pos = pygame.mouse.get_pos()
-                    utils.player = pygame.Rect(pos[0] + utils.camerax, pos[1] + utils.cameray, utils.size,utils.size)
-                
-                if mode == "erase":
-                    pos = pygame.mouse.get_pos()
+                elif mode == "player":
                     for wall in utils.collision_map:
-                        if wall['color'] == (0,0,0):
+                        if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.player = pygame.Rect(wall['object'].x + utils.camerax, wall['object'].y + utils.cameray, utils.size, utils.size)
+
+                elif mode == "erase":
+                    for wall in utils.collision_map:
+                        if wall['color'] != (255,255,255):
                             if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
                                 wall['color'] = (255,255,255)
                                 break
 
+                    for point in utils.endpoints:
+                        if point.collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.endpoints.remove(point)
+                            break
+                    
+                    for object_ in utils.objects:
+                        if object_.collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.objects.remove(object_)
+                            break
+
+                    for enemy in utils.enemies:
+                        if enemy.collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.enemies.remove(enemy)
+                            break
+                    
+                    if utils.player and utils.player.collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                        utils.player = None
+
+                elif mode == "endpoint":
+                    for wall in utils.collision_map:
+                        if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.endpoints.append(pygame.Rect(wall['object'].x + utils.camerax, wall['object'].y + utils.cameray, utils.size, utils.size))
+        
         key = pygame.key.get_pressed()
 
         # This moves the camera around the edit field, we have to also move each individual grid block so that we can keep adding blocks to other places.
@@ -122,12 +171,22 @@ def main():
         screen.fill((255,255,255))
 
         for x in utils.collision_map:
-            if x['color'] == (255,255,255):
+            if x['color'] == (255,255,255): # Draw grid
                 pygame.draw.rect(screen, x['color'], x['object'])
 
         for x in utils.collision_map:
-            if x['color'] == (0,0,0):
+            if x['color'] == (0,0,0): # Draw wall
                 pygame.draw.rect(screen, x['color'], pygame.Rect(x['object'].x - utils.camerax, x['object'].y - utils.cameray, utils.size,utils.size))
+        
+        for x in utils.enemies:
+            pygame.draw.rect(screen, (255, 0, 0), x)
+
+        for x in utils.objects:
+            pygame.draw.rect(screen, (255, 100, 0), x)
+
+        for x in utils.endpoints:
+            pygame.draw.rect(screen, (0, 100, 255), x)
+
 
         if utils.player: 
             pygame.draw.rect(screen, (0,255,255), pygame.Rect(utils.player.x - utils.camerax, utils.player.y - utils.cameray, utils.size,utils.size))

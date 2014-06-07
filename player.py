@@ -3,6 +3,7 @@ import physics
 from pygame.locals import *
 import pygame
 import time
+import util_functions
 
 class Player:
     def update(self):
@@ -23,6 +24,8 @@ class Player:
             
         if x or y:
             collidewith = physics.move(x, y, utils.player) 
+            if collidewith == "endpoint":
+                util_functions.next_map()
 
         # Gravity
 

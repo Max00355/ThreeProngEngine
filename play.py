@@ -5,6 +5,7 @@ import utils
 import player as player_
 import json
 import pickle
+import util_functions
 
 def load_collision_map(level):
 
@@ -13,15 +14,23 @@ def load_collision_map(level):
     
     utils.player = pygame.Rect(data['player'][0], data['player'][1], utils.size, utils.size) # Setup player
 
-    for x in data['map']: # Set up collision map
-        utils.collision_map.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
+    utils.collision_map = []
+    utils.enemies = []
+    utils.objects = []
+    utils.endpoints = []
+
+    for m in data['map']: # Set up collision map
+        utils.collision_map.append(pygame.Rect(m[0], m[1], utils.size, utils.size))
 
     for x in data['enemies']: # Setup enemies
         utils.enemies.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
 
     for x in data['objects']: # setup objects
         utils.objects.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
-    
+   
+    for x in data['endpoints']:
+        utils.endpoints.append(pygame.Rect(x[0], x[1], utils.size, utils.size))
+
     return json.loads(open("modules/maps.json").read())
 
 def run():
@@ -43,8 +52,8 @@ def run():
     for x in modules:
         modules[x] = json.loads(open(modules[x]).read())
 
-    map_ = load_collision_map(utils.first_level) # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
-    map_on = utils.first_level
+    utils.map_ = load_collision_map("maps/map.lvl") # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
+    utils.map_on = "maps/map.lvl"
     clock = pygame.time.Clock()
 
     while True:
@@ -54,13 +63,17 @@ def run():
                 sys.exit()
        
         screen.fill((255,255,255))
-
-        if map_[map_on]['background'] == "Rect":
+        
+        if utils.map_[utils.map_on]['background'] == "Rect":
             for x in utils.collision_map:
                 pygame.draw.rect(screen, (0,0,0), x)
         else:
             # Draw map file
-            screen.blit(utils.loader(map_[map_on]['background']), (0 - utils.camerax, 0 - utils.cameray))
+            screen.blit(util_functions.loader(utils.map_[utils.map_on]['background']), (0 - utils.camerax, 0 - utils.cameray))
+
+
+        ##################### Custom modules here ###################
+
 
         if modules[Player]['standing'] == "Rect":
             pygame.draw.rect(screen, (0, 255,255), utils.player)
@@ -69,7 +82,7 @@ def run():
             pass
 
 
-        # Update sprites
+        # Update sprites, add your sprite's update function here
 
         Player.update()
 

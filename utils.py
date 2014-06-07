@@ -1,6 +1,4 @@
 import pygame
-import math
-import os
 
 # Variables
 resolution = (800, 600)
@@ -14,18 +12,11 @@ collision_map = [] # This is a list of walls that the user can collide into set 
 speed = 5
 gravity = 3
 jump_speed = 10
-jump_time_in_air = 0.15 # Seconds
+jump_time_in_air = 0.15 # Seconds moving upward
 size = 16 # Size of blocks
 onground = False
 lastmove = "right"
 jump = None
-first_level = "maps/map.lvl"
+map_on = None
+map_ = None # Stores data of modules/maps.json
 
-# Userful functions
-
-def distance(x1 ,x2, y1, y2):
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-
-def loader(path):
-    image = pygame.image.load(path)
-    return image.convert_alpha()

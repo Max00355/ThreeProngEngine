@@ -10,6 +10,7 @@ def move(x, y, obj):
     walls = utils.collision_map
     enemies = utils.enemies
     objects = utils.objects
+    endpoints = utils.endpoints
     if not obj: # For edit mode
         return
     obj.x += x
@@ -42,10 +43,7 @@ def move(x, y, obj):
 
 
     for enemy in enemies:
-        if "object" in enemy:
-            enemy = enemy['object']
         if enemy.colliderect(obj):
-            collidewith = "enemy"
             if x > 0:
                 obj.x -= x
             
@@ -58,13 +56,10 @@ def move(x, y, obj):
             if y < 0:
                 obj.y += y
             
-            return collidewith
+            return "enemy"
         
-    for object_ in objects:
-        if "object" in object_:
-            object_ = object_['object'] 
-        if object_.collide(obj):
-            collidewith = "object"
+    for object_ in objects: 
+        if object_.colliderect(obj):
             if x > 0:
                 obj.x -= x
             
@@ -77,7 +72,10 @@ def move(x, y, obj):
             if y < 0:
                 obj.y += y
            
-            return collidewith
+            return "object"
 
+    for endpoint in endpoints:
+        if obj.colliderect(endpoint):
+            return "endpoint"
 
     return None
