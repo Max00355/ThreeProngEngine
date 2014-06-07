@@ -35,9 +35,16 @@ def load_collision_map(level):
 def run():
 
     screen = utils.screen
+    pygame.display.set_caption(utils.title)
+
+
+    ### Defining Objects ###
+
     Player = player_.Player()
 
+    ########################
 
+    ### Point objects toward module json file ###
 
     modules = {
 
@@ -45,6 +52,10 @@ def run():
         Player:"modules/player.json"
 
     }
+
+
+
+    ##############################################
 
 
     # Load modules

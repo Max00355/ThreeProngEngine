@@ -18,6 +18,7 @@ gravity = 3
 jump_speed = 10
 jump_time_in_air = 0.15 # Seconds moving upward
 size = 16 # Size of blocks
+title = "3 Prong Engine"
 
 ###########################################################
 
