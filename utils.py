@@ -16,15 +16,15 @@ collision_map = [] # This is a list of walls that the user can collide into set 
 speed = 5
 gravity = 3
 jump_speed = 10
-jump_time_in_air = 0.15 # Seconds moving upward
+jump_time_in_air = 0.15 # Seconds moving upward (determines how high the object will jump)
 size = 16 # Size of blocks
 title = "3 Prong Engine"
 
 ###########################################################
 
-onground = False
+onground = False # To control graity and jumping
 lastmove = "right" # To determine position of sprite image
-jump = None
-map_on = None
+jump = None # This is set to a base time when the player has the player jump
+map_on = None # Current map file
 map_ = None # Stores data of modules/maps.json
 
