@@ -5,6 +5,7 @@ import pygame
 from pygame.locals import *
 import utils
 import player as player_
+import enemy as enemy_
 import util_functions
 
 def load_collision_map(level):
@@ -41,6 +42,7 @@ def run():
     ### Defining Objects ###
 
     Player = player_.Player()
+    Enemy = enemy_.Enemy()
 
     ########################
 
@@ -49,8 +51,8 @@ def run():
     modules = {
 
 
-        Player:"modules/player.json"
-
+        Player:"modules/player.json",
+        Enemy:"modules/enemy.json",
     }
 
 
@@ -97,10 +99,17 @@ def run():
                 # Load images instead of block
                 pass
 
+        for enemy in utils.enemies:
+            if modules[Enemy]['standing'] == "Rect":
+                pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(enemy.x - utils.camerax, enemy.y - utils.cameray, utils.size, utils.size))
+            else:
+                # Load images in stead 
+                pass
 
         # Update sprites, add your sprite's update function here
 
         Player.update()
+        Enemy.update()
 
         pygame.display.update()
 

@@ -1,0 +1,7 @@
+{
+    "standing":"Rect", 
+    "jump":"Rect",
+    "run":"Rect",
+    "duck":"Rect"
+
+}

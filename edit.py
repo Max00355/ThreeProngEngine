@@ -6,6 +6,7 @@ import json
 import pickle
 import os
 import player as player_
+import enemy as enemy_
 
 def main():
     screen = utils.screen
@@ -53,7 +54,7 @@ def main():
     # Initalize objects that interact with world
 
     Player = player_.Player()    
-
+    Enemy = enemy_.Enemy()
 
     while True:
         clock.tick(35)
@@ -143,7 +144,13 @@ def main():
                     for wall in utils.collision_map:
                         if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
                             utils.endpoints.append(pygame.Rect(wall['object'].x + utils.camerax, wall['object'].y + utils.cameray, utils.size, utils.size))
-        
+       
+                elif mode == "enemy":
+                    for wall in utils.collision_map:
+                        if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.enemies.append(pygame.Rect(wall['object'].x + utils.camerax, wall['object'].y + utils.cameray, utils.size, utils.size))
+
+
         key = pygame.key.get_pressed()
 
         # This moves the camera around the edit field, we have to also move each individual grid block so that we can keep adding blocks to other places.
@@ -189,6 +196,9 @@ def main():
         for x in utils.endpoints:
             pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(x.x - utils.camerax, x.y - utils.cameray, utils.size,utils.size))
 
+        for x in utils.enemies:
+            pygame.draw.rect(screen, ( 255, 0, 0), pygame.Rect(x.x - utils.camerax, x.y - utils.cameray, utils.size, utils.size))
+
 
         if utils.player: 
             pygame.draw.rect(screen, (0,255,255), pygame.Rect(utils.player.x - utils.camerax, utils.player.y - utils.cameray, utils.size,utils.size))
@@ -201,7 +211,7 @@ def main():
         
         
         Player.update()    
-        
+        Enemy.update() 
         
         pygame.display.update()
 

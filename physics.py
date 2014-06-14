@@ -15,7 +15,7 @@ def move(x, y, obj):
         return
     obj.x += x
     obj.y += y
-    if utils.camera_on:
+    if utils.camera_on and obj == utils.player:
         utils.camerax += x
         utils.cameray += y
     for wall in walls:
@@ -37,10 +37,11 @@ def move(x, y, obj):
                     obj.x -= x
                 if y > 0: # Moving down
                     obj.y -= y
-                    utils.onground = True
+                    if obj == utils.player:
+                        utils.onground = True
                 if y < 0: # Moving up
                     obj.y -= y
-                if utils.camera_on: 
+                if utils.camera_on and obj == utils.player: 
                     utils.camerax -= x
                     utils.cameray -= y
 
@@ -60,7 +61,7 @@ def move(x, y, obj):
 
             if y < 0:
                 obj.y += y
-            if utils.camera_on:                                                                                                                                              
+            if utils.camera_on and obj == utils.player:                                                                                                                                              
                 utils.camerax -= x
                 utils.cameray -= y
             return "enemy"
@@ -78,7 +79,7 @@ def move(x, y, obj):
 
             if y < 0:
                 obj.y += y
-            if utils.camera_on:                                                                                                                                              
+            if utils.camera_on and obj == utils.player:                                                                                                                                              
                 utils.camerax -= x
                 utils.cameray -= y
             
