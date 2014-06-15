@@ -6,6 +6,7 @@ from pygame.locals import *
 import utils
 import player as player_
 import enemy as enemy_
+import object as object_
 import util_functions
 
 def load_collision_map(level):
@@ -43,6 +44,7 @@ def run():
 
     Player = player_.Player()
     Enemy = enemy_.Enemy()
+    Object = object_.Object()
 
     ########################
 
@@ -53,6 +55,7 @@ def run():
 
         Player:"modules/player.json",
         Enemy:"modules/enemy.json",
+        Object:"modules/object.json",
     }
 
 
@@ -110,7 +113,9 @@ def run():
 
         Player.update()
         Enemy.update()
+        Object.update()
 
+        ##########################################################
         pygame.display.update()
 
 if __name__ == "__main__":

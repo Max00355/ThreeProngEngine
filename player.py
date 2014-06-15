@@ -24,8 +24,13 @@ class Player:
             
         if x or y:
             collidewith = physics.move(x, y, utils.player) 
-            if collidewith == "endpoint":
-                util_functions.next_map()
+            if collidewith:
+                if collidewith[0] == "endpoint":
+                    util_functions.next_map()
+            
+                if collidewith[0] == "object":
+                    collidewith[3].x += collidewith[1]
+                    collidewith[3].y += collidewith[2]
 
         # Gravity
 

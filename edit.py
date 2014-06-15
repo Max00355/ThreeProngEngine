@@ -7,6 +7,7 @@ import pickle
 import os
 import player as player_
 import enemy as enemy_
+import object as object__
 
 def main():
     screen = utils.screen
@@ -43,7 +44,7 @@ def main():
 
 
     clock = pygame.time.Clock()
-    modes = ["block", "player", "object", "enemy", "endpoint", "erase"]
+    modes = ["block", "player", "object", "enemy", "endpoint", "object", "erase"]
     mode_on = 0
     pygame.font.init()
     font = pygame.font.SysFont("Arial", 25)
@@ -55,6 +56,7 @@ def main():
 
     Player = player_.Player()    
     Enemy = enemy_.Enemy()
+    Object = object__.Object()
 
     while True:
         clock.tick(35)
@@ -150,6 +152,11 @@ def main():
                         if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
                             utils.enemies.append(pygame.Rect(wall['object'].x + utils.camerax, wall['object'].y + utils.cameray, utils.size, utils.size))
 
+                elif mode == "object":
+                    for wall in utils.collision_map:
+                        if wall['object'].collidepoint(pos[0] + utils.camerax, pos[1] + utils.cameray):
+                            utils.objects.append(pygame.Rect(wall['object'].x + utils.camerax, wall['object'].y + utils.cameray, utils.size, utils.size))
+
 
         key = pygame.key.get_pressed()
 
@@ -212,7 +219,8 @@ def main():
         
         Player.update()    
         Enemy.update() 
-        
+        Object.update()
+
         pygame.display.update()
 
 

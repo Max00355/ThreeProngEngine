@@ -45,48 +45,56 @@ def move(x, y, obj):
                     utils.camerax -= x
                     utils.cameray -= y
 
-                return "wall"
+                return ("wall", x, y, wall)
+
+######################################################## CUSTOM MODULE LOOPS ##############################################################
+
+    """
+    
+        If nothing else is required but basic collision call collideit() and the function will take care of everything
+
+        It is best to return a tuple so that the other modules know in which direction the object was moving.
+
+    """
 
 
     for enemy in enemies:
-        if enemy.colliderect(obj):
-            if x > 0:
-                obj.x -= x
-            
-            if x < 0:
-                obj.x += x
-
-            if y > 0:
-                obj.y -= y
-
-            if y < 0:
-                obj.y += y
-            if utils.camera_on and obj == utils.player:                                                                                                                                              
-                utils.camerax -= x
-                utils.cameray -= y
-            return "enemy"
+        if enemy.colliderect(obj) and enemy != obj:
+            collideit(x, y, obj) 
+            return ("enemy", x, y, enemy)
         
     for object_ in objects: 
-        if object_.colliderect(obj):
-            if x > 0:
-                obj.x -= x
-            
-            if x < 0:
-                obj.x += x
-            
-            if y > 0:
-                obj.y -= y
+        if object_.colliderect(obj) and obj != object_:
+            collideit(x, y, obj) 
+            return ("object", x, y, object_)
 
-            if y < 0:
-                obj.y += y
-            if utils.camera_on and obj == utils.player:                                                                                                                                              
-                utils.camerax -= x
-                utils.cameray -= y
-            
-            return "object"
+
+######################################################## END OF CUSTOM MODULE LOOPS #######################################################
+
 
     for endpoint in endpoints:
         if obj.colliderect(endpoint):
-            return "endpoint"
+            return ("endpoint", x, y, endpoint)
 
     return None
+
+
+
+
+def collideit(x, y, obj):
+    
+    if x > 0:
+        obj.x -= x
+            
+    if x < 0:
+        obj.x -= x
+
+    if y > 0:
+        obj.y -= y
+
+    if y < 0:
+        obj.y -= y                                                                                                                                                                             
+    if utils.camera_on and obj == utils.player:                                                                                                                                              
+        utils.camerax -= x
+        utils.cameray -= y
+
