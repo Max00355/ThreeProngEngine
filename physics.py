@@ -37,13 +37,11 @@ def move(x, y, obj):
                     obj.x -= x
                 if y > 0: # Moving down
                     obj.y -= y
-                    if obj == utils.player:
+                    if obj == utils.player['object']:
                         utils.onground = True
                 if y < 0: # Moving up
                     obj.y -= y
-                if utils.camera_on and obj == utils.player: 
-                    utils.camerax -= x
-                    utils.cameray -= y
+                
 
                 return ("wall", x, y, wall)
 
@@ -59,11 +57,13 @@ def move(x, y, obj):
 
 
     for enemy in enemies:
+        enemy = enemy['object']
         if enemy.colliderect(obj) and enemy != obj:
             collideit(x, y, obj) 
             return ("enemy", x, y, enemy)
         
     for object_ in objects: 
+        object_ = object_['object']
         if object_.colliderect(obj) and obj != object_:
             collideit(x, y, obj) 
             return ("object", x, y, object_)
@@ -76,6 +76,10 @@ def move(x, y, obj):
         if obj.colliderect(endpoint):
             return ("endpoint", x, y, endpoint)
 
+    if utils.camera_on and obj == utils.player['object']:    
+        utils.camerax += x                                                                                                                                                                             
+        utils.cameray += y
+    
     return None
 
 
@@ -94,7 +98,7 @@ def collideit(x, y, obj):
 
     if y < 0:
         obj.y -= y                                                                                                                                                                             
-    if utils.camera_on and obj == utils.player:                                                                                                                                              
+    if utils.camera_on and obj == utils.player['object']:    
         utils.camerax -= x
         utils.cameray -= y
 

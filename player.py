@@ -12,12 +12,17 @@ class Player:
         # Any movement by player
         x = y = 0
         key = pygame.key.get_pressed()
+        utils.player['state'] = "standing"
         if key[K_d]:
             x = utils.speed
             utils.lastmove = "right"
+            utils.player['state'] = "run"
+
         if key[K_a]:
             x = -utils.speed
             utils.lastmove = "left"
+            utils.player['state'] = "run"
+
         if key[K_w] and utils.onground:
             utils.onground = False
             utils.jump = time.time()
@@ -33,7 +38,7 @@ class Player:
                     collidewith[3].y += collidewith[2]
 
         # Gravity
-
+       
         if not utils.jump: 
             collidewith = physics.move(0, utils.gravity, utils.player) 
         
