@@ -76,6 +76,8 @@ def run():
                 for num, n in enumerate(modules[module][m]):
                     modules[module][m][num] = {"image":pygame.image.load(n['image']).convert_alpha(), "times":n['times']}
 
+    print modules
+
     utils.map_ = util_functions.load_map_module()
     utils.map_on = utils.map_['first'] # Thee is a field in the module called "first" that defines the first "level" or screen.
     load_collision_map(utils.map_on) # This will load a level, in the future this will check if there is a saved file somewhere and load the map from there
@@ -123,7 +125,7 @@ def run():
                 pass
         
         for object__ in utils.objects:
-            if modules[Object]['standing'] == "Rect":
+            if modules[Object][object__['state']] == "Rect":
                 pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(object__['object'].x - utils.camerax, object__['object'].y - utils.cameray, utils.size, utils.size))
 
 ##########################################################

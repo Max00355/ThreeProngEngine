@@ -95,10 +95,12 @@ def collideit(x, y, obj):
 
     if y > 0:
         obj.y -= y
+        if obj == utils.player['object']:
+            utils.onground = True
 
     if y < 0:
         obj.y -= y                                                                                                                                                                             
-    if utils.camera_on and obj == utils.player['object']:    
+    if utils.camera_on and obj == utils.player['object'] and not utils.onground:    
         utils.camerax -= x
         utils.cameray -= y
 
