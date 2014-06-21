@@ -30,7 +30,7 @@ jump_speed = 10
 jump_time_in_air = 0.15 # Seconds moving upward (determines how high the object will jump)
 size = 16 # Size of blocks
 title = "3 Prong Engine"
-camera_on = False # This should only be True when there is a set background image, otherwise it won't look right
+camera_on = False 
 
 ###########################################################
 

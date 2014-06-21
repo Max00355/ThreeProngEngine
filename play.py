@@ -95,7 +95,7 @@ def run():
         
         if utils.map_[utils.map_on]['background'] == "Rect":
             for x in utils.collision_map:
-                pygame.draw.rect(screen, (0,0,0), x)
+                pygame.draw.rect(screen, (0,0,0), pygame.Rect(x.x - utils.camerax, x.y - utils.cameray, utils.size, utils.size))
         else:
             # Draw map file
             screen.blit(util_functions.loader(utils.map_[utils.map_on]['background']), (0 - utils.camerax, 0 - utils.cameray))
