@@ -5,13 +5,11 @@ import sys
 import json
 import pickle
 import os
-import player as player_
-import enemy as enemy_
-import object as object__
 
 def main():
     screen = utils.screen
-    
+    utils.player = None
+
     pygame.display.set_caption("Edit")
 
     xc = yc = 0
@@ -49,14 +47,6 @@ def main():
     pygame.font.init()
     font = pygame.font.SysFont("Arial", 25)
     
-
-
-
-    # Initalize objects that interact with world
-
-    Player = player_.Player()    
-    Enemy = enemy_.Enemy()
-    Object = object__.Object()
 
     while True:
         clock.tick(35)
@@ -211,16 +201,6 @@ def main():
             pygame.draw.rect(screen, (0,255,255), pygame.Rect(utils.player.x - utils.camerax, utils.player.y - utils.cameray, utils.size,utils.size))
         screen.blit(font.render(mode, -1, (0,0,0)), (10, 10))
         
-        
-        
-        
-        # Update objects on screen
-        
-        
-        Player.update()    
-        Enemy.update() 
-        Object.update()
-
         pygame.display.update()
 
 

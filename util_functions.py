@@ -6,7 +6,10 @@ import play
 import json
 
 def load_map_module():
-    return json.loads(open("modules/maps.json").read())
+    try:
+        return json.loads(open("modules/maps.json").read())
+    except ValueError:
+        print "Invalid maps.json syntax"
 
 def distance(x1 ,x2, y1, y2):
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
