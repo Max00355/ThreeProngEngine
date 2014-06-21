@@ -84,6 +84,7 @@ def run():
     if utils.camera_on: # This will center the camera on the player
         utils.camerax = (utils.player['object'].x / (utils.resolution[0] / 2)) - utils.resolution[0] / 3
         utils.cameray = (utils.player['object'].y / (utils.resolution[1] / 2)) - utils.resolution[1] / 6
+    font = pygame.font.init()
 
     while True:
         clock.tick(35)
@@ -135,6 +136,11 @@ def run():
         Object.update()
 
         ##########################################################
+        
+        for gamestate in utils.gameStatePhrases:
+            if utils.gamestate == gamestate:
+                for toprint in utils.gameStatePhrases[gamestate]:
+                    screen.blit(pygame.font.Font(toprint['font'], toprint['size']).render(toprint['phrase'], 1, toprint['color']), toprint['coords']) 
         pygame.display.update()
 
 
